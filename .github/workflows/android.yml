@@ -28,6 +28,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ABHI-MUSIC-FINAL
+          name: ABHI-MUSIC1-FINAL
           path: "**/build/outputs/apk/debug/*.apk"
 
