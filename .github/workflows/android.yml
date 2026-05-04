@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true # Agar koi submodule ho toh wo bhi load ho jaye
 
       - name: set up JDK 17
         uses: actions/setup-java@v4
@@ -22,16 +24,14 @@ jobs:
           find . -name "strings.xml" -exec sed -i 's/SimpMusic/Abhishek Music/g' {} +
 
           # 2. Liquid Glass ko Default ON karna
-          # Hum direct path use kar rahe hain taaki error na aaye
           find . -name "Preferences.kt" -exec sed -i 's/useLiquidGlass\] ?: false/useLiquidGlass\] ?: true/g' {} +
 
-          # 3. Performance Fix (Debug optimization)
-          # Isse scrolling smooth ho jayegi
-          sed -i 's/minifyEnabled false/minifyEnabled true/g' androidApp/build.gradle.kts || true
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-      - name: Build Optimized Debug APK
-        # Debug build fail nahi hoga aur jaldi banega
-        run: ./gradlew :androidApp:assembleDebug
+      - name: Build All Modules
+        # Is baar hum poore project ko build karenge taaki koi module miss na ho
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
