@@ -30,11 +30,11 @@ fun EndOfPage(withoutCredit: Boolean = false) {
     ) {
         if (!withoutCredit) {
             Text(
-                "@${now().year} " + stringResource(Res.string.app_name) + " " +
+                "©${now().year} " + stringResource(Res.string.app_name) + " " +
                     stringResource(
                         Res.string.version_format,
                         VersionManager.getVersionName(),
-                    ) + "\nmaxrave-dev",
+                    ) + "\nAbhishek Singh",
                 style = typo().bodySmall,
                 textAlign = TextAlign.Center,
                 modifier =
