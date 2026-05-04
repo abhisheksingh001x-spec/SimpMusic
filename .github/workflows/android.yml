@@ -1,4 +1,4 @@
-name: Build-SimpMusic-Abhishek
+name: Build-Abhishek-Music-Pro
 
 on:
   workflow_dispatch:
@@ -8,21 +8,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
 
       - name: set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'zulu'
-          cache: 'gradle'
+          distribution: 'temurin'
+          cache: gradle
 
-      - name: Build Debug APK
-        run: ./gradlew :androidApp:assembleDebug
+      - name: Custom Modifications (The Bawal Script)
+        run: |
+          # 1. App ka Naam Badalna
+          find . -name "strings.xml" -exec sed -i 's/SimpMusic/Abhishek Music/g' {} +
 
-      - name: Find and Upload APK
+          # 2. Liquid Glass ko Default ON karna
+          find . -name "Preferences.kt" -exec sed -i 's/useLiquidGlass\] ?: false/useLiquidGlass\] ?: true/g' {} +
+
+          # 3. Performance Fix (Release Optimization)
+          # Isse Lag kam hoga aur app smooth chalega
+          sed -i 's/debuggable true/debuggable false/g' androidApp/build.gradle.kts || true
+          
+          # 4. Links & Branding (Optional - Yahan apna link daal sakte ho)
+          # find . -type f -name "*.kt" -exec sed -i 's/https:\/\/github.com\/rebelatio\/simpmusic/https:\/\/github.com\/abhishek/g' {} +
+
+      - name: Build Release APK
+        # Hum Release build karenge taaki app "Makkhan" chale
+        run: ./gradlew :androidApp:assembleRelease
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: SimpMusic-Abhishek-APK
-          path: "**/build/outputs/apk/debug/*.apk"
+          name: Abhishek-Music-Smooth-Edition
+          path: "**/build/outputs/apk/release/*.apk"
