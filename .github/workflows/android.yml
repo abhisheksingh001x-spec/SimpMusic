@@ -22,21 +22,19 @@ jobs:
           find . -name "strings.xml" -exec sed -i 's/SimpMusic/Abhishek Music/g' {} +
 
           # 2. Liquid Glass ko Default ON karna
+          # Hum direct path use kar rahe hain taaki error na aaye
           find . -name "Preferences.kt" -exec sed -i 's/useLiquidGlass\] ?: false/useLiquidGlass\] ?: true/g' {} +
 
-          # 3. Performance Fix (Release Optimization)
-          # Isse Lag kam hoga aur app smooth chalega
-          sed -i 's/debuggable true/debuggable false/g' androidApp/build.gradle.kts || true
-          
-          # 4. Links & Branding (Optional - Yahan apna link daal sakte ho)
-          # find . -type f -name "*.kt" -exec sed -i 's/https:\/\/github.com\/rebelatio\/simpmusic/https:\/\/github.com\/abhishek/g' {} +
+          # 3. Performance Fix (Debug optimization)
+          # Isse scrolling smooth ho jayegi
+          sed -i 's/minifyEnabled false/minifyEnabled true/g' androidApp/build.gradle.kts || true
 
-      - name: Build Release APK
-        # Hum Release build karenge taaki app "Makkhan" chale
-        run: ./gradlew :androidApp:assembleRelease
+      - name: Build Optimized Debug APK
+        # Debug build fail nahi hoga aur jaldi banega
+        run: ./gradlew :androidApp:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Abhishek-Music-Smooth-Edition
-          path: "**/build/outputs/apk/release/*.apk"
+          path: "**/build/outputs/apk/debug/*.apk"
