@@ -99,7 +99,7 @@ android {
             }
         }
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
         }
